@@ -55,6 +55,9 @@ class HX711ADC
 		// set OFFSET, the value that's subtracted from the actual reading (tare weight)
 		void set_offset(long offset = 0);
 
+		// return OFFSET
+		long get_offset();
+
 		// puts the chip into power down mode
 		void power_down();
 
