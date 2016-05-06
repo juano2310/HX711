@@ -87,6 +87,10 @@ void HX711ADC::set_scale(float scale) {
 	SCALE = scale;
 }
 
+float HX711ADC::get_scale() {
+	return SCALE;
+}
+
 void HX711ADC::set_offset(long offset) {
 	OFFSET = offset;
 }
