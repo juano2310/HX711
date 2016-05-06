@@ -51,6 +51,9 @@ class HX711ADC
 
 		// set the SCALE value; this value is used to convert the raw data to "human readable" data (measure units)
 		void set_scale(float scale = 1.f);
+		
+		// return SCALE
+		float get_scale();
 
 		// set OFFSET, the value that's subtracted from the actual reading (tare weight)
 		void set_offset(long offset = 0);
