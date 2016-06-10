@@ -68,11 +68,16 @@ long HX711ADC::read() {
 }
 
 long HX711ADC::read_average(byte times) {
-	long sum = 0;
+	// accomodate failed reads, only average across those that were successful
+	long sum = 0; long s; byte t=0;
 	for (byte i = 0; i < times; i++) {
-		sum += read();
+		s=read();
+		if (s>0) {
+			sum += s;
+			t++;
+		}
 	}
-	return sum / times;
+	return sum / t;
 }
 
 double HX711ADC::get_value(byte times) {
