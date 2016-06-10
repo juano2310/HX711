@@ -38,8 +38,13 @@ void HX711ADC::set_gain(byte gain) {
 
 long HX711ADC::read() {
 	// wait for the chip to become ready
-	while (!is_ready());
-
+	int rtry=0;
+	while (!is_ready() && rtry<5) {
+		delay(15);
+		rtry++;
+	};
+	
+	if (!is_ready()) { return -1; }
 	byte data[3];
 
 	// pulse the clock pin 24 times to read the data
