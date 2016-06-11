@@ -77,7 +77,11 @@ long HX711ADC::read_average(byte times) {
 			t++;
 		}
 	}
-	return sum / t;
+	if (t>0) { 
+		return sum / t;
+	} else {
+		return 0;
+	}
 }
 
 double HX711ADC::get_value(byte times) {
