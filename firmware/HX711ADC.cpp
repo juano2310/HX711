@@ -38,8 +38,13 @@ void HX711ADC::set_gain(byte gain) {
 
 long HX711ADC::read() {
 	// wait for the chip to become ready
-	while (!is_ready());
-
+	int rtry=0;
+	while (!is_ready() && rtry<5) {
+		delay(15);
+		rtry++;
+	};
+	
+	if (!is_ready()) { return -1; }
 	byte data[3];
 
 	// pulse the clock pin 24 times to read the data
@@ -63,11 +68,20 @@ long HX711ADC::read() {
 }
 
 long HX711ADC::read_average(byte times) {
-	long sum = 0;
+	// accomodate failed reads, only average across those that were successful
+	long sum = 0; long s; byte t=0;
 	for (byte i = 0; i < times; i++) {
-		sum += read();
+		s=read();
+		if (s>0) {
+			sum += s;
+			t++;
+		}
 	}
-	return sum / times;
+	if (t>0) { 
+		return sum / t;
+	} else {
+		return 0;
+	}
 }
 
 double HX711ADC::get_value(byte times) {
@@ -87,8 +101,16 @@ void HX711ADC::set_scale(float scale) {
 	SCALE = scale;
 }
 
+float HX711ADC::get_scale() {
+	return SCALE;
+}
+
 void HX711ADC::set_offset(long offset) {
 	OFFSET = offset;
+}
+
+long HX711ADC::get_offset() {
+	return OFFSET;
 }
 
 void HX711ADC::power_down() {
